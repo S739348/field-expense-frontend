@@ -106,6 +106,7 @@ export const expenseAPI = {
   },
   delete: (expenseIds) => api.delete('/expenses/delete', { data: { expenseIds } }),
   getAll: (range) => api.get(`/expenses/show${range ? `?range=${range}` : ''}`),
+  getTasks: () => api.get('/tasks/showTaskId'),
 };
 
 // Category API
@@ -113,4 +114,9 @@ export const categoryAPI = {
   create: (name) => api.post('/expense-categories/create', { name }),
   delete: (categoryIds) => api.delete('/expense-categories/delete', { data: { categoryIds } }),
   getAll: () => api.get('/expense-categories/show'),
+};
+
+// Dashboard API
+export const dashboardAPI = {
+  getSummary: (range) => api.get(`/dashboard/summary${range ? `?range=${range}` : ''}`),
 };

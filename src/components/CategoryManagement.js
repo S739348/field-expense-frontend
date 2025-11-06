@@ -22,14 +22,26 @@ const CategoryManagement = () => {
       const response = await categoryAPI.getAll();
       setCategories(response.data);
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'Failed to fetch categories';
-      showToast(errorMessage, 'error');
+      showToast(getErrorMessage(error), 'error');
     }
   };
 
   const showToast = (message, type) => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3000);
+  };
+
+  const getErrorMessage = (error) => {
+    if (error.response?.data?.message) {
+      return error.response.data.message;
+    }
+    if (error.response?.data?.error) {
+      return error.response.data.error;
+    }
+    if (error.message) {
+      return error.message;
+    }
+    return 'An unexpected error occurred';
   };
 
   const handleSelectCategory = (categoryId) => {
@@ -52,8 +64,7 @@ const CategoryManagement = () => {
       setSelectedCategories([]);
       fetchCategories();
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'Failed to delete categories';
-      showToast(errorMessage, 'error');
+      showToast(getErrorMessage(error), 'error');
     } finally {
       setLoading(false);
     }
@@ -71,8 +82,7 @@ const CategoryManagement = () => {
       setCategoryName('');
       fetchCategories();
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'Failed to create category';
-      showToast(errorMessage, 'error');
+      showToast(getErrorMessage(error), 'error');
     } finally {
       setLoading(false);
     }
